@@ -6,11 +6,10 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 from requests import get
 from datetime import date, datetime
-get_ipython().magic(u'matplotlib inline')
+
 
 BOOK_URI = r'https://api.gemini.com/v1/book/ethusd?'
 API_KEY = r'1234'
-
 
 # Gemini public API entry points: requests limited to 120 requests per minute
 # Recommend not to exceed 1 request per second
@@ -22,7 +21,7 @@ def api_book(asks, bids, **kwargs):
     kwargs.update({'limit_asks': asks,
                    'limit_bids': bids
                   })
-    response = get(BASE_URI, kwargs).json()
+    response = get(BOOK_URI, kwargs).json()
     bid_price, bid_amount = [], []
     for i in response['bids']:
         bid_price.append(i['price'])
@@ -41,15 +40,9 @@ def calc_spread():
         book['bid_price'] = book['bid_price'].astype(float)
         book['spread'] = (book['price'] - book['bid_price']).astype(float)
     
-    print book
+    return book
 
 def count_neg_spread(book):
     for i in book['spread']:
         if i < 0:
             pass
-            
-def main():
-    calc_spread()
-
-if __name__ == '__main__':
-    main()
