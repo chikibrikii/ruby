@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[6]:
-
 import time
 import warnings
 import book
@@ -18,8 +13,6 @@ from keras.models import Sequential
 
 get_ipython().magic(u'matplotlib inline')
 
-
-# In[ ]:
 
 def build_model(layers):
     model = Sequential()
@@ -53,4 +46,3 @@ def normalise_windows(window_data):
         normalised_data.append(normalised_window)
     
     return normalised_data
-
