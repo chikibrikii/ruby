@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[4]:
-
 import json
 import pandas as pd
 
@@ -14,13 +9,8 @@ from datetime import date, datetime
 get_ipython().magic(u'matplotlib inline')
 
 
-# In[5]:
-
 BASE_URI = r'https://api.gemini.com/v1/book/ethusd?'
 API_KEY = r'1234'
-
-
-# In[6]:
 
 def api(asks, bids, **kwargs):
     kwargs.update({'limit_asks': asks,
@@ -55,16 +45,10 @@ def calc_spread():
 def count_neg_spread(book):
     for i in book['spread']:
         if i < 0:
-            print 'smiley'
-            
+            pass
+
 def main():
     book = calc_spread()
 
 if __name__ == '__main__':
     main()
-
-
-# In[53]:
-
-
-
