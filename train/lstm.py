@@ -11,8 +11,6 @@ from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.models import Sequential
 
-get_ipython().magic(u'matplotlib inline')
-
 
 def build_model(layers):
     model = Sequential()
