@@ -22,25 +22,32 @@ def api_book(asks, bids, **kwargs):
                    'limit_bids': bids
                   })
     response = get(BOOK_URI, kwargs).json()
+    
+    return response
+
+def create_book_df():
+    api_book()
     bid_price, bid_amount = [], []
     for i in response['bids']:
         bid_price.append(i['price'])
         bid_amount.append(i['amount'])
     
-    df = pd.DataFrame(response['asks']).sort_values(by = 'timestamp', ascending = True)
-    df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
-    df['bid_price'], df['bid_amount'] = bid_price, bid_amount
-    
+    book_df = pd.DataFrame(response['asks']).sort_values(by = 'timestamp', ascending = True)
+    book_df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
+    book_df['bid_price'], book_df['bid_amount'] = bid_price, bid_amount
+    df = pd.DataFrame(response)
+
     return df
 
 def calc_spread():
-    book = api_book(100, 100)
-    for row in book:
-        book['price'] = book['price'].astype(float)
-        book['bid_price'] = book['bid_price'].astype(float)
-        book['spread'] = (book['price'] - book['bid_price']).astype(float)
+    pass
+    # book = api_book(50, 50)
+    # for row in book:
+    #     book['price'] = book['price'].astype(float)
+    #     book['bid_price'] = book['bid_price'].astype(float)
+    #     book['spread'] = (book['price'] - book['bid_price']).astype(float)
     
-    return book
+    # print book
 
 def count_neg_spread(book):
     for i in book['spread']:

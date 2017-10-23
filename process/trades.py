@@ -19,11 +19,11 @@ API_KEY = r'1234'
 
 def api_trades():
     response = get(TRADES_URI).json()
-    df = pd.DataFrame(response)\
-        .drop('exchange', axis = 1)\
-        .sort_values(by = 'timestampms', ascending = True)
-    df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
-    df['timestampms'] = pd.to_datetime(df['timestamp'], unit = 'ms')
-    trades = df
+    # df = pd.DataFrame(response)\
+    #     .drop('exchange', axis = 1)\
+    #     .sort_values(by = 'timestampms', ascending = True)
+    # df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
+    # df['timestampms'] = pd.to_datetime(df['timestamp'], unit = 'ms')
+    # trades = df
         
-    return trades
+    print response
