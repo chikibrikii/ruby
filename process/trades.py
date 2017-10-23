@@ -17,13 +17,17 @@ API_KEY = r'1234'
 # Gemini private API entry points: requests limited to 600 requests per minute
 # Recommend not to exceed 5 requests per second
 
-def api_trades():
+def get_trades():
     response = get(TRADES_URI).json()
-    # df = pd.DataFrame(response)\
-    #     .drop('exchange', axis = 1)\
-    #     .sort_values(by = 'timestampms', ascending = True)
-    # df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
-    # df['timestampms'] = pd.to_datetime(df['timestamp'], unit = 'ms')
-    # trades = df
-        
-    print response
+
+    return response
+
+def create_trades_df():
+    response = get_trades()
+    trades_df = pd.DataFrame(response)\
+        .drop('exchange', axis = 1)\
+        .sort_values(by = 'timestampms', ascending = True)
+    trades_df['timestamp'] = pd.to_datetime(trades_df['timestamp'], unit = 's')
+    trades_df['timestampms'] = pd.to_datetime(trades_df['timestamp'], unit = 'ms')
+
+    return trades_df

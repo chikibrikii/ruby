@@ -1,4 +1,5 @@
 import json
+import time
 import pandas as pd
 
 from collections import OrderedDict
@@ -17,7 +18,7 @@ API_KEY = r'1234'
 # Gemini private API entry points: requests limited to 600 requests per minute
 # Recommend not to exceed 5 requests per second
 
-def api_book(asks, bids, **kwargs):
+def get_book(asks, bids, **kwargs):
     kwargs.update({'limit_asks': asks,
                    'limit_bids': bids
                   })
@@ -26,30 +27,19 @@ def api_book(asks, bids, **kwargs):
     return response
 
 def create_book_df():
-    api_book()
+    response = get_book(50, 50)
     bid_price, bid_amount = [], []
     for i in response['bids']:
         bid_price.append(i['price'])
         bid_amount.append(i['amount'])
     
     book_df = pd.DataFrame(response['asks']).sort_values(by = 'timestamp', ascending = True)
-    book_df['timestamp'] = pd.to_datetime(df['timestamp'], unit = 's')
+    book_df['timestamp'] = pd.to_datetime(book_df['timestamp'], unit = 's')
     book_df['bid_price'], book_df['bid_amount'] = bid_price, bid_amount
-    df = pd.DataFrame(response)
 
-    return df
+    for row in book_df:
+            book_df['price'] = book_df['price'].astype(float)
+            book_df['bid_price'] = book_df['bid_price'].astype(float)
+            book_df['spread'] = (book_df['price'] - book_df['bid_price']).astype(float)
 
-def calc_spread():
-    pass
-    # book = api_book(50, 50)
-    # for row in book:
-    #     book['price'] = book['price'].astype(float)
-    #     book['bid_price'] = book['bid_price'].astype(float)
-    #     book['spread'] = (book['price'] - book['bid_price']).astype(float)
-    
-    # print book
-
-def count_neg_spread(book):
-    for i in book['spread']:
-        if i < 0:
-            pass
+    return book_df
